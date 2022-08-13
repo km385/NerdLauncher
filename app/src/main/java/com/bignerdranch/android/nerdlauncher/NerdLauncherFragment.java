@@ -1,13 +1,16 @@
 package com.bignerdranch.android.nerdlauncher;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -64,20 +67,37 @@ public class NerdLauncherFragment extends Fragment {
         mRecyclerView.setAdapter(new ActivityAdapter(activities));
     }
 
-    private class ActivityHolder extends RecyclerView.ViewHolder{
+    private class ActivityHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener{
         private ResolveInfo mResolveInfo;
         private TextView mNameTextView;
+        private ImageView mIconView;
 
         public ActivityHolder(@NonNull View itemView) {
             super(itemView);
-            mNameTextView = (TextView) itemView;
+            mNameTextView = (TextView) itemView.findViewById(R.id.text1);
+            mNameTextView.setOnClickListener(this);
+            mIconView = (ImageView) itemView.findViewById(R.id.image1);
         }
 
         public void bindActivity(ResolveInfo resolveInfo){
             mResolveInfo = resolveInfo;
             PackageManager pm = getActivity().getPackageManager();
             String appName = mResolveInfo.loadLabel(pm).toString();
+            Drawable icon =  mResolveInfo.loadIcon(pm);
             mNameTextView.setText(appName);
+            mIconView.setImageDrawable(icon);
+        }
+
+        @Override
+        public void onClick(View v) {
+            ActivityInfo activityInfo = mResolveInfo.activityInfo;
+
+            Intent i = new Intent(Intent.ACTION_MAIN)
+                    .setClassName(activityInfo.applicationInfo.packageName,
+                            activityInfo.name)
+                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
         }
     }
 
@@ -93,7 +113,7 @@ public class NerdLauncherFragment extends Fragment {
         public ActivityHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View view = layoutInflater
-                    .inflate(android.R.layout.simple_list_item_1, parent, false);
+                    .inflate(R.layout.list_item, parent, false);
             return new ActivityHolder(view);
         }
 

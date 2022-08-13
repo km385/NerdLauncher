@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_1.xml" value="0.17760416666666667" />
+        <entry key="../../Android/Sdk/platforms/android-32/data/res/layout/simple_list_item_2.xml" value="0.2558876811594203" />
         <entry key="app/src/main/res/layout/activity_fragment.xml" value="0.17046605876393112" />
         <entry key="app/src/main/res/layout/fragment_nerd_launcher.xml" value="0.17046605876393112" />
+        <entry key="app/src/main/res/layout/list_item.xml" value="0.33" />
       </map>
     </option>
   </component>
